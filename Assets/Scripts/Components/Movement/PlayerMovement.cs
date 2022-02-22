@@ -6,10 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 0.3f;
     float xDelta, yDelta;
-    void Start()
-    {
-           
-    }
 
     void Update()
     {
