@@ -6161,7 +6161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun1: {fileID: 910824601}
   gun2: {fileID: 907585373}
-  fireDistance: 8
+  fireDistance: 10
   fireDelay: 0.15
 --- !u!54 &1843138989
 Rigidbody:

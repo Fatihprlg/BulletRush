@@ -73,7 +73,7 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1f;
         // I want to make a condition that if a next level exists go to next level, if there is no new level reload level
-        if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex)
+        if (SceneManager.sceneCountInBuildSettings > SceneManager.GetActiveScene().buildIndex + 1)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         else
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
