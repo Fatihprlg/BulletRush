@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] int spawnCount = 3;
+    [SerializeField] GameObject levelFailedMenu;
+    [SerializeField] GameObject levelPassedMenu;
     private static GameController _instance;
 
     public static GameController Instance { get { return _instance; } }
-    [SerializeField] int spawnCount = 3;
     public int activeSpawnCount;
     void Start()
     {
