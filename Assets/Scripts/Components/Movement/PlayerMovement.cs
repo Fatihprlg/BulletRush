@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
         if (SwipeManager.isDraging)
         {
             xDelta = SwipeManager.x * Time.deltaTime * moveSpeed;

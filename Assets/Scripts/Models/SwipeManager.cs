@@ -22,6 +22,7 @@ public class SwipeManager : MonoBehaviour
             isDraging = false;
             Reset();
         }
+
         #endregion
 
         #region Mobile Input
