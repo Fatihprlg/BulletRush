@@ -6,12 +6,16 @@ public class Player : MonoBehaviour
 {
     [SerializeField] GameObject gun1, gun2;
     [SerializeField] float fireDistance = 10f;
+    
     GameObject target1, target2;
     List<GameObject> enemies = new List<GameObject>();
-    PoolInfo bulletPool;
+    GameObject[] spawnPoints;
+    PoolInfo bulletPool; 
+    
     int bulletPoolCounter = 0;
     float fireElapsedTime = 0;
-    public float fireDelay = 0.01f;
+    
+    public float fireDelay = 0.1f;
 
     private void Start()
     {
@@ -20,6 +24,7 @@ public class Player : MonoBehaviour
         bulletPool = ObjectPool.Instance.GetPoolInfo(PoolType.Bullet);
         enemies.AddRange(simpleEnemies.poolObjects);
         enemies.AddRange(bigEnemies.poolObjects);
+        spawnPoints = GameObject.FindGameObjectsWithTag("EnemySpawn");
     }
 
     private void FixedUpdate()
@@ -30,23 +35,47 @@ public class Player : MonoBehaviour
             fireElapsedTime = 0;
             Fire();
         }
-        
+
     }
 
     bool FindNearestEnemy(GameObject gun, out GameObject target)
     {
 
-        float distance = fireDistance * 2;
-        GameObject nearest = null;
+        float enemyDistance = fireDistance * 2;
+        float spawnDistance = enemyDistance;
+        float survivingDistance = fireDistance / 2;
+        GameObject nearestEnemy = null, nearestSpawn = null;
         foreach (GameObject enemy in enemies)
         {
-            if (Vector3.Distance(gun.transform.position, enemy.transform.position) < distance)
+            if (Vector3.Distance(gun.transform.position, enemy.transform.position) < enemyDistance)
             {
-                nearest = enemy;
-                distance = Vector3.Distance(gun.transform.position, enemy.transform.position);
+                nearestEnemy = enemy;
+                enemyDistance = Vector3.Distance(gun.transform.position, enemy.transform.position);
             }
         }
-        target = nearest;
+
+        foreach (GameObject spawn in spawnPoints)
+        {
+            if (Vector3.Distance(gun.transform.position, spawn.transform.position) < spawnDistance)
+            {
+                nearestSpawn = spawn;
+                enemyDistance = Vector3.Distance(gun.transform.position, spawn.transform.position);
+            }
+        }
+        if (nearestEnemy != null && nearestSpawn != null)
+        {
+            //if spawnPoint near than enemies and nearest enemy further than surviving distance, fire spawnPoint
+            if (Vector3.Distance(gun.transform.position, nearestEnemy.transform.position) > survivingDistance &&
+            Vector3.Distance(gun.transform.position, nearestSpawn.transform.position) < Vector3.Distance(gun.transform.position, nearestEnemy.transform.position))
+            {
+                target = nearestSpawn;
+            }
+            else target = nearestEnemy;
+        }
+        else if (nearestEnemy != null && nearestSpawn == null) target = nearestEnemy;
+        else if (nearestEnemy == null && nearestSpawn != null) target = nearestSpawn;
+        else target = null;
+
         if (target == null) return false;
         else return true;
     }
@@ -58,7 +87,6 @@ public class Player : MonoBehaviour
             gun1.transform.LookAt(new Vector3(target1.transform.position.x, 1.5f, target1.transform.position.z));
             if (Vector3.Distance(gun1.transform.position, target1.transform.position) <= fireDistance)
             {
-                Debug.Log("fire1");
                 bulletPool.poolObjects[bulletPoolCounter].SetActive(true);
                 bulletPool.poolObjects[bulletPoolCounter].transform.position = gun1.transform.GetChild(0).position;
                 bulletPool.poolObjects[bulletPoolCounter].GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -70,9 +98,8 @@ public class Player : MonoBehaviour
         if (FindNearestEnemy(gun2, out target2) && target2.activeInHierarchy)
         {
             gun2.transform.LookAt(new Vector3(target2.transform.position.x, 1.5f, target2.transform.position.z));
-            if (Vector3.Distance(gun2.transform.position, target2.transform.position) <= fireDistance )
+            if (Vector3.Distance(gun2.transform.position, target2.transform.position) <= fireDistance)
             {
-                Debug.Log("fire2");
                 bulletPool.poolObjects[bulletPoolCounter].SetActive(true);
                 bulletPool.poolObjects[bulletPoolCounter].transform.position = gun2.transform.GetChild(0).position;
                 bulletPool.poolObjects[bulletPoolCounter].GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -84,6 +111,7 @@ public class Player : MonoBehaviour
 
     public void DealDamage()
     {
+        GameController.Instance.isSuccess = false;
         GameController.Instance.GameOver();
         gameObject.SetActive(false);
     }

@@ -15,7 +15,6 @@ public class SpawnPoint : MonoBehaviour
     public void DealDamage(int value)
     {
         health -= value;
-        Debug.Log("health: " + health + " damage: " + value);
         healthBar.UpdateBar(health, maxHealth);
         if (health <= 0)
         {

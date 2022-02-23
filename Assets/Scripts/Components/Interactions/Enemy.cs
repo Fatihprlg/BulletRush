@@ -26,5 +26,13 @@ public class Enemy : MonoBehaviour
         transform.localPosition = Vector3.zero;
         gameObject.SetActive(false);
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.collider.tag);
+        Player player = collision.collider.GetComponent<Player>();
+        if (player != null)
+        {
+            player.DealDamage();
+        }
+    }
 }

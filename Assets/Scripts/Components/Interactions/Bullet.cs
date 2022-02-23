@@ -29,7 +29,8 @@ public class Bullet : MonoBehaviour
         {
             spawn.DealDamage(damage);
         }
-        if (!other.gameObject.CompareTag("Player"))
+        // if (!other.gameObject.CompareTag("Player"))  -> could avoid collide with player or other bullets with tag comparison 
+        // but did changed player and bullet layers collision detection in physics settings
         gameObject.SetActive(false);
     }
 }

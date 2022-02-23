@@ -31,7 +31,6 @@ public class ObjectPool : MonoBehaviour
 
     void CreatePool(PoolInfo info)
     {
-        Debug.Log(info.type);
         if (info.type != PoolType.Bullet)
         {
             NavMeshHit hit;

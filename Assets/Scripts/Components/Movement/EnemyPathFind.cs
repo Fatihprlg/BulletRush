@@ -59,12 +59,4 @@ public class EnemyPathFind : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Player player = collision.collider.GetComponent<Player>();
-        if (player != null)
-        {
-            player.DealDamage();
-        }
-    }
 }

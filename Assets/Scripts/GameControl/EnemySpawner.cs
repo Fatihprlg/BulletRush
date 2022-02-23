@@ -4,65 +4,67 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-	[SerializeField] float range = 20.0f;
-	[SerializeField] float spawnDelay = 0.3f;
-	[SerializeField] int bigEnemyTreshold = 10;
-	[SerializeField] GameObject player;
-	[SerializeField] GameObject spawnPoint;
+    [SerializeField] float range = 20.0f;
+    [SerializeField] float spawnDelay = 0.3f;
+    [SerializeField] int bigEnemyTreshold = 10;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject[] spawnPoint;
 
-	bool activated = false;
+    bool activated = false;
 
-	void Update()
-	{
-		if (activated) return;
-		if (Vector3.Distance(transform.position, player.transform.position) < range)
-        {
-			Debug.DrawLine(transform.position, player.transform.position);
-			activated = true;
-			StartCoroutine(SpawnEnemies());
-        }
-	}
-
-	IEnumerator SpawnEnemies()
+    void Update()
     {
-		int bigEnemyCounter = 0;
-		int simpleEnemyPoolCounter = 0, bigEnemyPoolCounter = 0;
-		PoolInfo simpleEnemies = ObjectPool.Instance.GetPoolInfo(PoolType.SimpleEnemy);
-		PoolInfo bigEnemies = ObjectPool.Instance.GetPoolInfo(PoolType.BigEnemy);
-		NavMeshHit hit;
-		if (NavMesh.SamplePosition(spawnPoint.transform.position, out hit, 1.0f, NavMesh.AllAreas))
-		{
-			while (true)
-			{
-				if (!simpleEnemies.poolObjects[simpleEnemyPoolCounter].activeInHierarchy)
-				{
-					simpleEnemies.poolObjects[simpleEnemyPoolCounter].transform.position = hit.position;
-					simpleEnemies.poolObjects[simpleEnemyPoolCounter++].SetActive(true);
-					bigEnemyCounter++;
-					if (simpleEnemyPoolCounter == simpleEnemies.poolSize) simpleEnemyPoolCounter = 0;
-				}
-				yield return new WaitForSeconds(spawnDelay);
-				if (bigEnemyCounter >= bigEnemyTreshold && !bigEnemies.poolObjects[bigEnemyPoolCounter].activeInHierarchy)
-				{
-					bigEnemyCounter = 0;
-					bigEnemies.poolObjects[bigEnemyPoolCounter].transform.position = hit.position;
-					bigEnemies.poolObjects[bigEnemyPoolCounter++].SetActive(true);
-					if (bigEnemyPoolCounter == bigEnemies.poolSize) bigEnemyPoolCounter = 0;
+        if (activated) return;
+        if (Vector3.Distance(transform.position, player.transform.position) < range)
+        {
+            Debug.DrawLine(transform.position, player.transform.position);
+            activated = true;
+            StartCoroutine(SpawnEnemies());
+        }
+    }
 
-					yield return new WaitForSeconds(spawnDelay);
-				}
-			}
-		}
+    IEnumerator SpawnEnemies()
+    {
+        int bigEnemyCounter = 0;
+        int simpleEnemyPoolCounter = 0, bigEnemyPoolCounter = 0;
+        PoolInfo simpleEnemies = ObjectPool.Instance.GetPoolInfo(PoolType.SimpleEnemy);
+        PoolInfo bigEnemies = ObjectPool.Instance.GetPoolInfo(PoolType.BigEnemy);
+        NavMeshHit hit;
+
+        while (true)
+        {
+            int spawnPointIndex = Random.Range(0, 3);
+            if (NavMesh.SamplePosition(spawnPoint[spawnPointIndex].transform.position, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                if (!simpleEnemies.poolObjects[simpleEnemyPoolCounter].activeInHierarchy)
+                {
+                    simpleEnemies.poolObjects[simpleEnemyPoolCounter].transform.position = hit.position;
+                    simpleEnemies.poolObjects[simpleEnemyPoolCounter++].SetActive(true);
+                    bigEnemyCounter++;
+                    if (simpleEnemyPoolCounter == simpleEnemies.poolSize) simpleEnemyPoolCounter = 0;
+                }
+                yield return new WaitForSeconds(spawnDelay);
+                if (bigEnemyCounter >= bigEnemyTreshold && !bigEnemies.poolObjects[bigEnemyPoolCounter].activeInHierarchy)
+                {
+                    bigEnemyCounter = 0;
+                    bigEnemies.poolObjects[bigEnemyPoolCounter].transform.position = hit.position;
+                    bigEnemies.poolObjects[bigEnemyPoolCounter++].SetActive(true);
+                    if (bigEnemyPoolCounter == bigEnemies.poolSize) bigEnemyPoolCounter = 0;
+
+                    yield return new WaitForSeconds(spawnDelay);
+                }
+            }
+        }
     }
 
 #if UNITY_EDITOR
-	private void OnDrawGizmos()
-	{
-		Gizmos.DrawWireSphere(transform.position, range);
-	}
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
 #endif
 
-	/*
+    /*
 	 * Spawn enemies random point on navmesh
 	 * 
 	 * void SpawnEnemy()
