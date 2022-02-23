@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     void ResetEnemy()
     {
         health = maxHealth;
+        transform.localPosition = Vector3.zero;
         gameObject.SetActive(false);
     }
 

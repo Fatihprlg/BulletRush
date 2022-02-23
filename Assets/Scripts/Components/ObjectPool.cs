@@ -38,11 +38,20 @@ public class ObjectPool : MonoBehaviour
             if (NavMesh.SamplePosition(info.container.transform.position, out hit, 1.0f, NavMesh.AllAreas))
                 for (int i = 0; i < info.poolSize; i++)
                 {
-                    GameObject obj = Instantiate(info.prefab,hit.position, Quaternion.identity, info.container.transform);
+                    GameObject obj = Instantiate(info.prefab, hit.position, Quaternion.identity, info.container.transform);
                     obj.SetActive(false);
                     info.poolObjects.Add(obj);
                 }
+        }
+        else
+        {
+            for (int i = 0; i < info.poolSize; i++)
+            {
+                GameObject obj = Instantiate(info.prefab, info.container.transform);
+                obj.SetActive(false);
+                info.poolObjects.Add(obj);
 
+            }
         }
 
     }
