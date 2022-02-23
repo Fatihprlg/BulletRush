@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
             fireElapsedTime = 0;
             Fire();
         }
-
     }
 
     bool FindNearestEnemy(GameObject gun, out GameObject target)
@@ -45,6 +43,7 @@ public class Player : MonoBehaviour
         float spawnDistance = enemyDistance;
         float survivingDistance = fireDistance / 2;
         GameObject nearestEnemy = null, nearestSpawn = null;
+        
         foreach (GameObject enemy in enemies)
         {
             if (Vector3.Distance(gun.transform.position, enemy.transform.position) < enemyDistance)

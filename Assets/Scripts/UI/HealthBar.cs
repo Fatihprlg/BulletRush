@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +10,6 @@ public class HealthBar : MonoBehaviour
         healthBar.fillAmount = health / maxHealth;
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         canvas.gameObject.transform.LookAt(Camera.main.transform); 

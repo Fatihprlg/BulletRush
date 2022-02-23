@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    //[SerializeField] bool isBigEnemy;
     [SerializeField] int maxHealth;
     int health;
 
@@ -28,7 +24,6 @@ public class Enemy : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.collider.tag);
         Player player = collision.collider.GetComponent<Player>();
         if (player != null)
         {

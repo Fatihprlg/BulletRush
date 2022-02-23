@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,10 +6,12 @@ public class EnemyPathFind : MonoBehaviour
     [SerializeField] float actionDistance = 7f;
     [SerializeField] float agentSpeed = 5f;
     bool activated = false;
+    
     GameObject target;
     NavMeshAgent agent;
-    public bool isBigEnemy;
+    
     [HideInInspector] public bool goneBehind = false;
+    public bool isBigEnemy;
 
     void Awake()
     {

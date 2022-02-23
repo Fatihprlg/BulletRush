@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -7,13 +6,13 @@ public class ObjectPool : MonoBehaviour
 {
 
     [SerializeField] List<PoolInfo> poolInfos;
+    
     private static ObjectPool _instance;
-
     public static ObjectPool Instance { get { return _instance; } }
 
     private void Awake()
     {
-
+        //Singleton
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);

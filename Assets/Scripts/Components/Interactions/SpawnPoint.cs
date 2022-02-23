@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+
 [RequireComponent(typeof(HealthBar))]
 public class SpawnPoint : MonoBehaviour
 {
     [SerializeField] int maxHealth = 1500;
-    HealthBar healthBar;
     int health;
+   
+    HealthBar healthBar;
 
     void Start()
     {
