@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (FindNearestEnemy(gun1, out target1))
+        if (FindNearestEnemy(gun1, out target1) && target1.activeInHierarchy)
         {
             gun1.transform.LookAt(new Vector3(target1.transform.position.x, 1.5f, target1.transform.position.z));
             if (Vector3.Distance(gun1.transform.position, target1.transform.position) <= fireDistance)
@@ -67,10 +67,10 @@ public class Player : MonoBehaviour
 
             }
         }
-        if (FindNearestEnemy(gun2, out target2))
+        if (FindNearestEnemy(gun2, out target2) && target2.activeInHierarchy)
         {
             gun2.transform.LookAt(new Vector3(target2.transform.position.x, 1.5f, target2.transform.position.z));
-            if (Vector3.Distance(gun2.transform.position, target2.transform.position) <= fireDistance)
+            if (Vector3.Distance(gun2.transform.position, target2.transform.position) <= fireDistance )
             {
                 Debug.Log("fire2");
                 bulletPool.poolObjects[bulletPoolCounter].SetActive(true);

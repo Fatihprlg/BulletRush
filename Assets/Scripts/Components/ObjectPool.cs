@@ -57,5 +57,4 @@ public class ObjectPool : MonoBehaviour
     }
 
     public PoolInfo GetPoolInfo(PoolType type) => poolInfos.Find(i => i.type == type);
-
 }

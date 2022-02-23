@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
 		if (activated) return;
 		if (Vector3.Distance(transform.position, player.transform.position) < range)
         {
+			Debug.DrawLine(transform.position, player.transform.position);
 			activated = true;
 			StartCoroutine(SpawnEnemies());
         }

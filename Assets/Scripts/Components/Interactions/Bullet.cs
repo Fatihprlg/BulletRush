@@ -20,11 +20,16 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.GetComponent<Enemy>();
-        Debug.Log(other.gameObject.layer);
         if (enemy != null)
         {
             enemy.DealDamage(damage);
         }
+        SpawnPoint spawn = other.GetComponent<SpawnPoint>();
+        if (spawn != null)
+        {
+            spawn.DealDamage(damage);
+        }
+        if (!other.gameObject.CompareTag("Player"))
         gameObject.SetActive(false);
     }
 }
